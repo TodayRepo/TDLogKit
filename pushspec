@@ -69,7 +69,7 @@ function build_spec2framework() {
     specfilename=$1
     filename=${specfilename%.*}
     version=$2
-    pod package $specfilename --force --embedded --no-mangle --exclude-deps --spec-sources=https://gitee.com/SilverRiver/Specs.git,https://cdn.cocoapods.org/,https://github.com/CocoaPods/Specs.git
+    pod package $specfilename --force --embedded --no-mangle --exclude-deps --spec-sources=https://github.com/TodayRepo/Specs.git
     framework_source_path=${filename}-${version}/ios/${filename}.embeddedframework
     framework_target_path=.
     #先清理k老的
