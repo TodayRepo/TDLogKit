@@ -1,0 +1,27 @@
+{
+  "name": "TDLogKit",
+  "version": "0.0.2",
+  "summary": "Today",
+  "homepage": "https://github.com/TodayRepo",
+  "license": "MIT",
+  "authors": {
+    "Today": "15012981687@163.com"
+  },
+  "source": {
+    "git": "https://github.com/TodayRepo/TDLogKit.git",
+    "tag": "0.0.2"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source_files": "TDLogKit/TDLogKit/**/*.{h,m}",
+  "public_header_files": "TDLogKit/TDLogKit/**/*.h",
+  "dependencies": {
+    "YYText": [
+
+    ],
+    "Masonry": [
+
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "TDHomeLog",
+  "version": "0.0.1",
+  "summary": "Today",
+  "homepage": "https://gitee.com/SilverRiver",
+  "license": "MIT",
+  "authors": {
+    "Today": "15012981687@163.com"
+  },
+  "source": {
+    "git": "https://gitee.com/SilverRiver/TDHomeLog.git",
+    "tag": "0.0.1"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source_files": "TDHomeLog/TDHomeLog/**/*.{h,m}",
+  "public_header_files": "TDHomeLog/TDHomeLog/**/*.h",
+  "dependencies": {
+    "YYText": [
+
+    ]
+  }
+}

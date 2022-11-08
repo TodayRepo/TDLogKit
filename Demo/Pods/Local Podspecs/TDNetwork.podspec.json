@@ -1,0 +1,24 @@
+{
+  "name": "TDNetwork",
+  "version": "0.1.0",
+  "summary": "Today",
+  "homepage": "https://gitee.com/SilverRiver",
+  "license": "MIT",
+  "authors": {
+    "Today": "15012981687@163.com"
+  },
+  "source": {
+    "git": "https://gitee.com/SilverRiver/TDNetwork.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source_files": "TDNetwork/TDNetwork/**/*.{h,m}",
+  "public_header_files": "TDNetwork/TDNetwork/**/*.h",
+  "dependencies": {
+    "AFNetworking": [
+
+    ]
+  }
+}

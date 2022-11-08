@@ -1,0 +1,21 @@
+#指定自定义CocoaPods安装选项
+install! 'cocoapods',
+
+#当多个源包含具有相同名称和版本的Pod时，是否发出警告
+#该选项默认为true。
+warn_for_multiple_pod_sources: false,
+
+#是否保留所有pod的文件结构，包括外部pod源
+#设置:preserve_pod_file_structure为true将始终保存文件结构。
+#该选项默认为false。
+:preserve_pod_file_structure => true
+
+platform :ios, '9.0'
+use_frameworks!
+
+
+target 'Demo' do
+  pod 'TDLogKit', :path => '../'
+#  pod 'TDNetwork'
+
+end

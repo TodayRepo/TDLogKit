@@ -1,0 +1,27 @@
+PODS:
+  - Masonry (1.1.0)
+  - TDLogKit (0.0.2):
+    - Masonry
+    - YYText
+  - YYText (1.0.7)
+
+DEPENDENCIES:
+  - TDLogKit (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - Masonry
+    - YYText
+
+EXTERNAL SOURCES:
+  TDLogKit:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  TDLogKit: c082b05910686a00183eb208f630fd3decfe33ed
+  YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
+
+PODFILE CHECKSUM: a7e223777dddf5db51727ccfbcbcd0f5fb0e2f93
+
+COCOAPODS: 1.11.3

@@ -1,0 +1,168 @@
+#!/bin/sh
+# 执行 ./pushspec
+# 可选参数
+# no-validate  不需要验证spec的正确性直接推送
+# build-framework 编译成Framework
+# 比如 ./pushspec build-framework no-validate  会先打出Framework然后不需要验证直接几秒内推送到spec仓库
+#
+#
+
+ #推送spec
+function pushSpec() {
+    specfilename=$1
+    echo "pod repo push today-specs ${specfilename} --verbose --allow-warnings --use-libraries --sources=https://github.com/TodayRepo/Spec.git,https://github.com/CocoaPods/Specs.git,https://cdn.cocoapods.org/"
+    pod repo push today-specs ${specfilename} --verbose --allow-warnings --use-libraries --sources=https://github.com/TodayRepo/Spec.git,https://cdn.cocoapods.org/,https://github.com/CocoaPods/Specs.git
+}
+
+#推送到spec仓库without验证
+function pushSpecWithoutVerification {
+    # test.podspec
+    specfilename=$1
+    #  test
+    filename=${specfilename%.*}
+    # 1.0
+    version=$2
+    source_name=today-specs
+    spec_source_path=~/.cocoapods/repos/$source_name
+    if [ ! -d $spec_source_path ]; then
+        echo "${spec_source_path}不存在，请联系管理员Today"
+        exit
+    fi
+    
+    cd $spec_source_path
+    #先更新spec
+    git fetch --all
+    git reset --hard origin/master
+    git pull
+    
+    #创建目录
+    if [ ! -d $filename ]; then
+        mkdir $filename
+        echo "创建目录$filename"
+    fi
+    cd $filename
+    
+    if [ ! -d $version ]; then
+    
+        mkdir $version
+        echo "创建版本$version"
+         
+        source_path=$spec_path/$specfilename
+        target_path=$spec_source_path/$filename/$version
+        echo "\033[31m cp -r ${source_path} ${target_path}  \033[0m"
+        cp -r "${source_path}" "${target_path}"
+        if [ $? -ne 0 ]; then
+            echo "\033[31m copy failed \033[0m"
+        else
+            #上传spec
+            git add -A .
+            git commit -m "[update] $specfilename ($version)"
+            git push origin master
+        fi
+    else
+        echo "版本已存在，不需要上传"
+        exit
+    fi
+}
+
+function build_spec2framework() {
+    specfilename=$1
+    filename=${specfilename%.*}
+    version=$2
+    pod package $specfilename --force --embedded --no-mangle --exclude-deps --spec-sources=https://gitee.com/SilverRiver/Specs.git,https://cdn.cocoapods.org/,https://github.com/CocoaPods/Specs.git
+    framework_source_path=${filename}-${version}/ios/${filename}.embeddedframework
+    framework_target_path=.
+    #先清理k老的
+    echo "rm -rf ${filename}.framework"
+    rm -rf ${filename}.framework
+    echo "find $framework_source_path -name *.framework  | xargs -I F  mv "F" $framework_target_path"
+    find $framework_source_path -name *.framework  | xargs -I F  mv "F" $framework_target_path
+    if [ $? -ne 0 ]; then
+        echo "\033[31m copy failed \033[0m"
+    else
+        echo "\033[31m build success \033[0m"
+    fi
+    #再清理build目录
+    echo "rm -rf ${filename}-${version}"
+    rm -rf ${filename}-${version}
+}
+
+ #修改版本
+function modVersion() {
+    specfilename=$1
+    version=$2
+    echo "======开始修改spec文件版本号======"
+    sed -i "" "s/spec.version.*=.*/spec.version      = '$version' /g" ${specfilename}
+    sed -i "" "s/s.version.*=.*/s.version      = '$version' /g" ${specfilename}
+    git add -A && git commit -m "修改spec文件版本号:$version"
+    git push origin
+}
+
+#修改tag
+function modTag {
+    version=$1
+    echo "======开始打tag:$version======"
+    git tag $version
+    git push --tags
+}
+
+############################### handle param ####################################
+read -t 120 -p "请输入spec完整路径:" spec_full_path
+if [[ $spec_full_path = *.podspec ]]
+then
+    echo "copy that"
+else
+    echo "\033[31m 请输入带有podspec文件的路径 \033[0m "
+    exit
+fi
+
+
+read -t 120 -p "请输入版本号:" version
+echo "version:$version"
+#路径不带有podspec的
+spec_path=${spec_full_path%/*}
+#文件名称带有podspec的
+specfilename=${spec_full_path##*/}
+
+
+#处理参数
+no_validate=0
+build_framework=0
+#选项和参数
+while [ -n "$1" ]
+do
+    case "$1" in
+        no-validate) no_validate=1 ;;
+        build-framework) build_framework=1 ;;
+        --) shift
+        break ;;
+         *) echo "$1 is not an option" ;;
+    esac
+    shift
+done
+
+cd $spec_path
+#前面都是准备工程-----开始执行脚本
+if [[ $version != "" ]]; then
+    echo "修改spec信息"
+    #修改版本
+    modVersion ${specfilename} $version
+    #修改tag
+    modTag $version
+fi
+
+#编译Framework
+if [ $build_framework == 1 ]; then
+    echo "build framework"
+    build_spec2framework $specfilename $version
+fi
+
+#推送
+if [ $no_validate == 0 ]; then
+    echo "push spec"
+    pushSpec $specfilename
+else
+    echo "push spec"
+    #不需要验证，便于快速上传
+    pushSpecWithoutVerification  $specfilename  $version
+fi
