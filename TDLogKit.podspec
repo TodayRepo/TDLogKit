@@ -8,11 +8,11 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TDLogKit'
-  s.version      = '0.0.2' 
+  s.version      = '0.0.3' 
   s.summary          = 'Today'
   s.homepage         = 'https://github.com/TodayRepo'
   s.license          = "MIT"
-  s.author           = { 'Today' => '15012981687@163.com' }
+  s.author           = { 'Today' => '809848374@qq.com' }
   s.source           = { :git => 'https://github.com/TodayRepo/TDLogKit.git', :tag => s.version }
 
   s.ios.deployment_target = '9.0'
