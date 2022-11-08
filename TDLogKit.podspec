@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TDLogKit'
-  s.version      = '0.0.1' 
+  s.version      = '0.0.8' 
   s.summary          = 'Today'
   s.homepage         = 'https://github.com/TodayRepo'
   s.license          = "MIT"
