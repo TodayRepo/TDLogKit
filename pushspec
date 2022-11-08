@@ -10,8 +10,8 @@
  #推送spec
 function pushSpec() {
     specfilename=$1
-    echo "pod repo push today-specs ${specfilename} --verbose --allow-warnings --use-libraries --sources=https://github.com/TodayRepo/Spec.git,https://github.com/CocoaPods/Specs.git,https://cdn.cocoapods.org/"
-    pod repo push today-specs ${specfilename} --verbose --allow-warnings --use-libraries --sources=https://github.com/TodayRepo/Spec.git,https://cdn.cocoapods.org/,https://github.com/CocoaPods/Specs.git
+    echo "pod repo push today-specs ${specfilename} --verbose --allow-warnings --use-libraries --sources=https://github.com/TodayRepo/Spec.git"
+    pod repo push today-specs ${specfilename} --verbose --allow-warnings --use-libraries --sources=https://github.com/TodayRepo/Spec.git
 }
 
 #推送到spec仓库without验证
