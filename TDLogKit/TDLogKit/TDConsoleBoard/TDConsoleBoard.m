@@ -318,20 +318,33 @@ alpha:alphaValue]
 }
 
 -(UIWindow *)keyWindow{
-    UIWindow *foundWindow = nil;
-    if (@available(iOS 13, *)) {
-        NSArray  *windows = [[UIApplication sharedApplication] windows];
-        foundWindow = windows.firstObject;
-//        for (UIWindow *window in windows) {
-//            if (window.isKeyWindow) {
-//                foundWindow = window;
-//                break;
-//            }
-//        }
-    } else {
-        foundWindow = [UIApplication sharedApplication].keyWindow;
+    if (@available(iOS 13.0, *)) {
+        for (UIScene *scene in UIApplication.sharedApplication.connectedScenes) {
+            if (scene.activationState != UISceneActivationStateForegroundActive) {
+                continue;
+            }
+            if (![scene isKindOfClass:UIWindowScene.class]) {
+                continue;
+            }
+            for (UIWindow *window in ((UIWindowScene *)scene).windows) {
+                if (window.isKeyWindow) {
+                    return window;
+                }
+            }
+        }
     }
-    return foundWindow;
+    
+    if ([[UIApplication sharedApplication].delegate respondsToSelector:@selector(window)]) {
+        return [[UIApplication sharedApplication].delegate window];
+    }
+    
+    for (UIWindow *window in [UIApplication sharedApplication].windows) {
+        if (window.isKeyWindow) {
+            return window;
+        }
+    }
+    
+    return nil;
 }
 
 #pragma mark - 显示
